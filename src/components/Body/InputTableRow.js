@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { nanoid } from "nanoid";
 
-const InputTableRow = ({ setData }) => {
+const InputTableRow = ({ setData, setInputVisibility }) => {
   const [name, setName] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
-  const [aadharNumber, setAadharNumber] = useState();
-  const [mobileNumber, setMobileNumber] = useState();
+  const [aadharNumber, setAadharNumber] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
 
   const calculateAge = (dob) => {
@@ -35,16 +36,20 @@ const InputTableRow = ({ setData }) => {
     ) {
       const age = calculateAge(dateOfBirth);
       const newEntry = {
+        id:nanoid(),
         name,
         dateOfBirth,
-        aadharNumber:Number(aadharNumber),
-        mobileNumber:Number(mobileNumber),
+        aadharNumber,
+        mobileNumber,
         age,
       };
 
       setData((prevData) => {
-        localStorage.setItem("Entries", JSON.stringify([...prevData, newEntry]));
-        return [...prevData, newEntry]
+        localStorage.setItem(
+          "Entries",
+          JSON.stringify([...prevData, newEntry])
+        );
+        return [...prevData, newEntry];
       });
 
       setName("");
@@ -54,6 +59,14 @@ const InputTableRow = ({ setData }) => {
     } else {
       setIsFormValid(true);
     }
+  };
+
+  const handleCancel = () => {
+    setName("");
+    setDateOfBirth("");
+    setAadharNumber("");
+    setMobileNumber("");
+    setInputVisibility(false);
   };
 
   return (
@@ -115,6 +128,12 @@ const InputTableRow = ({ setData }) => {
               onClick={handleSave}
             >
               Save
+            </button>
+            <button
+              className={`btn btn-error btn-sm px-5 w-fit mx-auto `}
+              onClick={handleCancel}
+            >
+              Cancel
             </button>
           </div>
         </td>

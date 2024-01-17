@@ -4,7 +4,7 @@ import TableBody from "./TableBody";
 import InputTableRow from "./InputTableRow";
 
 const Tables = () => {
-  const [visibleInput, setVisibleInput] = useState(false);
+  const [inputVisibility, setInputVisibility] = useState(false);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -14,18 +14,23 @@ const Tables = () => {
     }
   }, []);
 
+  useEffect(() => {
+    setInputVisibility(false);
+  },[data])
+
   return (
     <div className="overflow-x-auto">
       <table className="table border-collapse border border-primary-content overflow-hidden rounded-xl ">
         <TableHead />
-        <TableBody />
+        <TableBody data={data} setData={setData} />
 
-        {visibleInput && <InputTableRow setData={setData} />}
+        {inputVisibility && <InputTableRow setData={setData} setInputVisibility={setInputVisibility} />}
       </table>
+      {data.length === 0 && <p className="text-lg text-warning text-center mt-4">No Data Found!</p>}
       <div className="w-full flex justify-center items-center mt-4">
         <button
           className="btn btn-sm btn-primary w-fit mx-auto"
-          onClick={() => setVisibleInput(true)}
+          onClick={() => setInputVisibility(true)}
         >
           Add New Entry
         </button>
