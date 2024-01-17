@@ -3,7 +3,7 @@ import React from "react";
 const TableHead = () => {
   return (
     <thead className="bg-primary text-primary-content">
-      <tr className="*:border *:text-center">
+      <tr className="*:border *:text-center text-base">
         <th>Name</th>
         <th>Date of Birth</th>
         <th>Aadhaar Number</th>
