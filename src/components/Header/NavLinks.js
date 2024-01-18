@@ -8,14 +8,14 @@ const NavLinks = () => {
     <ul className="flex mr-4 *:px-3 *:py-2 gap-4 font-bold *:cursor-pointer *:duration-500">
       <li
         className={`hover:scale-95 text-primary-content rounded-3xl ${
-          path == "/" ? "text-slate-800 scale-95 bg-[#cccccc1e]" : ""
+          path === "/" ? "text-slate-800 scale-95 bg-[#cccccc1e]" : ""
         }`}
       >
         <Link to="">Add New Person</Link>
       </li>
       <li
         className={`hover:scale-95 text-primary-content rounded-3xl ${
-          path == "/retrieve" ? "text-slate-800 scale-95 bg-[#cccccc1e]" : ""
+          path === "/retrieve" ? "text-slate-800 scale-95 bg-[#cccccc1e]" : ""
         }`}
       >
         <Link to="retrieve"> Retrieve Information</Link>
