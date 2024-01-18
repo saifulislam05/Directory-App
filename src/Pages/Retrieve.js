@@ -1,9 +1,39 @@
 import React, { useState } from "react";
+import InfoCard from "../components/Body/InfoCard";
 
 const Retrieve = () => {
   const [aadhaarInput, setAadhaarInput] = useState("");
+  const [info, setInfo] = useState({});
+  const [isFound, setIsFound] = useState(false);
+  const [incorrectAadhar, setIncorrectAadhar] = useState(false);
+
+  const findHandler = () => {
+    if (aadhaarInput.length !== 12) {
+      setIncorrectAadhar(true);
+      return;
+    }
+
+    setIsFound(false);
+    const entries = localStorage.getItem("Entries");
+    const parsedData = JSON.parse(entries);
+    const foundedData = parsedData.find(
+      (item) => item.aadharNumber === aadhaarInput
+    );
+
+    setIsFound(true);
+    setInfo(foundedData);
+  };
+
+  const inputHandler = (e) => {
+    const inputValue = e.target.value;
+    const isInputValid = inputValue.length === 12;
+
+    setIncorrectAadhar(!isInputValid);
+    setAadhaarInput(inputValue);
+  };
+
   return (
-    <div className="w-11/12 mx-auto ">
+    <div className="w-11/12 mx-auto">
       <h1 className="text-xl font-bold w-fit mx-auto border-b-2 pb-2 my-4">
         Retrieve Information
       </h1>
@@ -12,47 +42,36 @@ const Retrieve = () => {
           <input
             type="text"
             placeholder="Find with Aadhaar Number"
-            className="input input-primary min-w-64"
+            className={`input input-primary min-w-64 ${
+              incorrectAadhar ? "input-error" : ""
+            }`}
+            value={aadhaarInput}
+            onChange={inputHandler}
           />
-          <button className="btn btn-primary px-9 text-lg">Find</button>
+          <button
+            className="btn btn-primary px-9 text-lg"
+            onClick={findHandler}
+          >
+            Find
+          </button>
         </div>
-        <div className="card w-full md:w-96 bg-base-100 shadow-xl mx-auto mt-10">
-          <div className="card-body">
-            <table>
-              <tbody className="text-lg font-semibold">
-                <tr>
-                  <td>Name :</td>
-                  <td>Saiful Islam</td>
-                </tr>
-                <tr>
-                  <td>Date Of Birth :</td>
-                  <td>07/12/2001</td>
-                </tr>
-                <tr>
-                  <td>Aadhaar Number :</td>
-                  <td>000012222111</td>
-                </tr>
-                <tr>
-                  <td>Mobile Number :</td>
-                  <td>000012222111</td>
-                </tr>
-                <tr>
-                  <td>Age :</td>
-                  <td>22 years</td>
-                </tr>
-              </tbody>
-            </table>
-
-            {/* <h2 className="card-title">Name: Saiful Islam</h2>
-            <h2 className="card-title">Date Of Birth: 07/12/2001</h2>
-            <h2 className="card-title">Aadhaar No.: 000012222111</h2>
-            <h2 className="card-title">Mobile No.: 000012222111</h2>
-            <h2 className="card-title">Age: 22 Years</h2> */}
-          </div>
-        </div>
+        {isFound ? (
+          info !== undefined ? (
+            <div className="card w-full md:w-96 bg-base-100 shadow-xl mx-auto mt-10">
+              <div className="card-body">
+                <InfoCard info={info} />
+              </div>
+            </div>
+          ) : (
+            <p className="text-center text-xl font-bold mt-10 text-error">
+              No Match Found!
+            </p>
+          )
+        ) : null}
       </div>
     </div>
   );
 };
+
 
 export default Retrieve;
